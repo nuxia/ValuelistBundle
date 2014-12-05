@@ -4,11 +4,10 @@
     "type": "symfony-bundle",
     "description": "Valuelist",
     "autoload": {
-        "psr-0": { "Nuxia\\Bundle\\ValuelistBundle": ""}
+        "psr-4": { "Nuxia\\Bundle\\ValuelistBundle": ""}
     },
     "require": {
         "php": ">=5.4",
         "symfony/framework-bundle": "~2.0"
     },
-    "target-dir": "Nuxia/Bundle/ValuelistBundle"
 }
