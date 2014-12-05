@@ -1,0 +1,7 @@
+valuelist:
+    code:
+        label: "Code"
+    label:
+        label: "Libellé"
+    value:
+        label: "Valeur"

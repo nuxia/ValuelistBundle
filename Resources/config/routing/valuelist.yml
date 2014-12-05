@@ -1,0 +1,15 @@
+valuelist_index:
+    path: "/{category}"
+    defaults: { _controller: "nuxia_valuelist.admin.controller:indexAction" }
+
+valuelist_new:
+    path: "/new/{category}"
+    defaults: { _controller: "nuxia_valuelist.admin.controller:newAction" }
+
+valuelist_edit:
+    path: "/edit/{category}/{id}"
+    defaults: { _controller: "nuxia_valuelist.admin.controller:editAction" }
+
+valuelist_delete:
+    path: "/delete/{category}/{id}"
+    defaults: { _controller: "nuxia_valuelist.admin.controller:deleteAction" }

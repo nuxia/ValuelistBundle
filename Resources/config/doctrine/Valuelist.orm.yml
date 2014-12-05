@@ -1,0 +1,56 @@
+Nuxia\ValuelistBundle\Entity\Valuelist:
+    type: "entity"
+    repositoryClass: "Nuxia\ValuelistBundle\Repository\ValuelistRepository"
+    table: "valuelist"
+    id:
+        id:
+            type: "integer"
+            generator:
+                strategy: "AUTO"
+    fields:
+        code:
+            type: "string"
+            length: "32"
+        language:
+            type: "string"
+            length: "64"
+        category:
+            type: "string"
+            length: "32"
+        label:
+            type: "string"
+            length: "255"
+        value:
+            type: "float"
+            nullable: true
+    manyToOne:
+        parent:
+            targetEntity: "Nuxia\ValuelistBundle\Entity\Valuelist"
+            inversedBy: children
+            joinColumn:
+                name: "valuelist_id"
+                referencedColumnName: "id"
+                onDelete: "cascade"
+                onUpdate: "cascade"
+    oneToMany:
+        children:
+            targetEntity: "Nuxia\ValuelistBundle\Entity\Valuelist"
+            mappedBy: "parent"
+    indexes:
+        valuelist_id_i:
+            columns: "id"
+        valuelist_parent_i:
+            columns: "valuelist_id"
+        valuelist_code_i:
+            columns: "code"
+        valuelist_language_i:
+            columns: "language"
+        valuelist_label_i:
+            columns: "label"
+        valuelist_category_i:
+            columns: "category"
+        valuelist_value_i:
+            columns: "value"
+    uniqueConstraints:
+        valuelist_code_u:
+            columns: ["code","language","category","valuelist_id"]

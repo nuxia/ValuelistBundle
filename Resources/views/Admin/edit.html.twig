@@ -1,0 +1,14 @@
+{% extends 'NuxiaValuelistBundle:Admin:base.html.twig' %}
+
+{% block title_content %}
+    {{ ('valuelist.' ~ category ~ '.edit.title')|trans({}, 'messages') }}
+{% endblock %}
+
+{% block seo %}
+    <title>{{ ('valuelist.' ~ category ~ '.edit.title')|trans({}, 'messages') }}</title>
+    <meta content="{{ ('valuelist.' ~ category ~ '.edit.title')|trans({}, 'messages') }}" name="title">
+{% endblock %}
+
+{% block content %}
+    {% include 'NuxiaValuelistBundle:Admin:form.html.twig' %}
+{% endblock %}

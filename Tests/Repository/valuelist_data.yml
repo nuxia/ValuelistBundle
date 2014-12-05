@@ -1,0 +1,30 @@
+fr:
+    category1:
+        no-parent:
+            code1: {label: "label1"}
+            code2: {label: "label12"}
+    category2:
+        no-parent:
+            fr1: {label: "label2"}
+    category3:
+        parent1:
+            code1: {label: "label1"}
+            code2: {label: "label2"}
+        parent2:
+            code1: {label: "label1"}
+            code2: {label: "label2"}
+        no-parent:
+            code1: {label: "label1"}
+en:
+    category1:
+        no-parent:
+            code1: {label: "label1"}
+            code2: {label: "label2"}
+    category2:
+        no-parent:
+            default1: {label: "labelen"}
+default:
+    category2:
+        no-parent:
+            default1: {label: "label-default"}
+            default2: {label: "label-default"}

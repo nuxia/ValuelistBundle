@@ -1,0 +1,20 @@
+{% import 'NuxiaValuelistBundle:Macro:valuelist.html.twig' as valuelist_macro %}
+
+{{ form_start(form, {'attr': {'novalidate': 'novalidate' }}) }}
+
+{% block form_content %}
+    {{ form_widget(form) }}
+{% endblock %}
+
+{% block form_actions_tag %}
+    <div class="form-actions">
+        {{ form_row(form.submit) }}
+        {% block form_actions_content %}
+            <a href="{{ valuelist_macro.index_url(category) }}" title="{{ 'back'|trans({}, 'messages') }}">
+                {{ 'back'|trans({}, 'messages') }}
+            </a>
+        {% endblock %}
+    </div>
+{% endblock %}
+
+{{ form_end(form) }}

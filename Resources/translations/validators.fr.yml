@@ -1,0 +1,10 @@
+field:
+    required: "Ce champ est obligatoire."
+    length:
+        max: "Ce champ ne doit pas excéder {{ limit }} caractère.|Ce champ ne doit pas excéder {{ limit }} caractères."
+    number:
+        invalid: "La valeur saisie doit être une valeur numérique"
+
+valuelist:
+    code:
+        already_used: "Ce code est déjà utilisé pour une autre valeur"

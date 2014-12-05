@@ -1,0 +1,7 @@
+{% import 'NuxiaValuelistBundle:Macro:valuelist.html.twig' as valuelist_macro %}
+
+<div>
+    {% for category in categories %}
+        {{ valuelist_macro.index_link(category) }}
+    {% endfor %}
+</div>

@@ -1,0 +1,42 @@
+parameters:
+    nuxia_valuelist.form.type: "nuxia_valuelist_valuelist"
+    nuxia_valuelist.manager.class: "Nuxia\ValuelistBundle\Manager\AdminValuelistManager"
+
+services:
+    nuxia_valuelist.admin.controller:
+        parent: "nuxia.controller.abstract"
+        class: "Nuxia\ValuelistBundle\Controller\AdminController"
+        calls:
+            - [ "setSecurityManager", [ "@nuxia.security.manager" ] ]
+            - [ "setValuelistManager", [ "@nuxia_valuelist.manager" ] ]
+            - [ "setValuelistPaginator", [ "@nuxia_valuelist.paginator" ] ]
+            - [ "setValuelistFormHandler", [ "@nuxia_valuelist.form.handler" ] ]
+            - [ "setCategories", [ "%nuxia_valuelist.admin.categories%" ] ]
+
+    nuxia_valuelist.paginator:
+        parent: "nuxia.paginator.default"
+        class: "Nuxia\ValuelistBundle\\Pager\ValuelistPaginator"
+        public: false
+        calls:
+            - [ "setValuelistManager", [ "@nuxia_valuelist.manager" ] ]
+            - [ "setLimit", ["%nuxia_valuelist.admin.paginator.limit%"] ]
+
+    nuxia_valuelist.form.type:
+        class: "Nuxia\ValuelistBundle\Form\Type\ValuelistType"
+        tags:
+            - { name: "form.type", alias: "nuxia_valuelist_valuelist"}
+
+    nuxia_valuelist.form.factory:
+        class: "Nuxia\Component\Form\Factory\FormFactory"
+        public: false
+        arguments:
+            - "@form.factory"
+            - "%nuxia_valuelist.form.type%"
+
+    nuxia_valuelist.form.handler:
+        parent: "nuxia.form.handler.abstract"
+        class:  "Nuxia\ValuelistBundle\Form\Handler\ValuelistFormHandler"
+        public: false
+        calls:
+            - [ "setFormFactory", [ "@nuxia_valuelist.form.factory" ] ]
+            - [ "setValuelistManager", ["@nuxia_valuelist.manager" ] ]

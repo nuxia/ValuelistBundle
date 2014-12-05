@@ -1,0 +1,6 @@
+nuxia_valuelist_admin:
+    resource: "@NuxiaValuelistBundle/Resources/config/routing/valuelist.yml"
+    prefix:   "/{admin_prefix}/valuelist"
+    defaults: { admin_prefix: "admin"}
+    requirements:
+        category: "%nuxia_valuelist.admin.category_requirements%"

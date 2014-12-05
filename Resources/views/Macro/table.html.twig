@@ -1,0 +1,23 @@
+{% macro data(object, field) %}
+    {{ attribute(object, field) }}
+{% endmacro %}
+
+{% macro row(object, fields) %}
+    {% for field in fields %}
+        {{ _self.td(object, field) }}
+    {% endfor %}
+{% endmacro %}
+
+{% macro td(object, field) %}
+    <td>{% spaceless %}{{ _self.data(object, field) }}{% endspaceless %}</td>
+{% endmacro %}
+
+{% macro head(model, fields) %}
+    {% for field in fields %}
+        {{ _self.th(model, field) }}
+    {% endfor %}
+{% endmacro %}
+
+{% macro th(model, field) %}
+    <th>{% spaceless %}{{ (model ~ '.' ~ field|underscore ~  '.label')|trans({}, 'form') }}{% endspaceless %}</th>
+{% endmacro %}

@@ -1,0 +1,18 @@
+Nuxia\ValuelistBundle\Entity\Valuelist:
+    constraints:
+        - Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity:
+            fields: ["category", "code"]
+            message: "valuelist.code.already_used"
+    properties:
+        code:
+            - NotBlank:
+                message: "field.required"
+            - Length:
+                max: "32"
+                maxMessage: "field.length.max"
+        label:
+            - NotBlank:
+                message: "field.required"
+            - Length:
+                max: "64"
+                maxMessage: "field.length.max"

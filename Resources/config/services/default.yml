@@ -1,0 +1,29 @@
+services:
+    nuxia_valuelist.manager:
+        class: "Nuxia\ValuelistBundle\Manager\ValuelistManager"
+        # Ce service est utilisé dans les fixtures
+        #public: false
+        calls:
+            - [ "setEntityManager", [ "@doctrine.orm.entity_manager" ] ]
+
+    nuxia_valuelist.twig.extension:
+        class: "Nuxia\ValuelistBundle\Twig\ValuelistExtension"
+        public: false
+        arguments:
+            - "@nuxia_valuelist.manager"
+        tags:
+            - { name: "twig.extension" }
+
+    nuxia_valuelist_choice.form.type:
+        class: "Nuxia\ValuelistBundle\Form\Type\ValuelistChoiceType"
+        calls:
+            - [ "setValuelistManager", [ "@nuxia_valuelist.manager" ] ]
+        tags:
+            - { name: "form.type", alias: "nuxia_valuelist_valuelist_choice" }
+
+    nuxia_valuelist_choice_bind.form.type:
+        class: "Nuxia\ValuelistBundle\Form\Type\ValuelistChoiceBindType"
+        arguments:
+            - "@nuxia_valuelist.manager"
+        tags:
+            - { name: "form.type", alias: "nuxia_valuelist_valuelist_bind_choice" }
