@@ -41,18 +41,6 @@ class AdminValuelistManager extends ValuelistManager implements
      *
      * @return mixed
      */
-    public function getPaginatorTarget(array $criteria, $type = 'list', array $parameters = array())
-    {
-        return $this->getRepository()->getQueryByCriteria($criteria, $type, $parameters);
-    }
-
-    /**
-     * @param array  $criteria
-     * @param string $type
-     * @param array  $parameters
-     *
-     * @return mixed
-     */
     public function getControllerObject(array $criteria, $type = 'default', array $parameters = array())
     {
         return $this->getRepository()->findOneByCriteria($criteria, $type, $parameters);

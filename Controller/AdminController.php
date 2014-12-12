@@ -28,11 +28,6 @@ class AdminController extends AbstractController
     protected $valuelistManager;
 
     /**
-     * @var PaginatorInterface
-     */
-    protected $valuelistPaginator;
-
-    /**
      * @var ValuelistFormHandler
      */
     protected $valuelistFormHandler;
@@ -48,14 +43,6 @@ class AdminController extends AbstractController
     public function setValuelistManager(AdminValuelistManagerInterface $valuelistManager)
     {
         $this->valuelistManager = $valuelistManager;
-    }
-
-    /**
-     * @param PaginatorInterface $valuelistPaginator
-     */
-    public function setValuelistPaginator(PaginatorInterface $valuelistPaginator)
-    {
-        $this->valuelistPaginator = $valuelistPaginator;
     }
 
     /**
@@ -94,17 +81,17 @@ class AdminController extends AbstractController
     public function indexAction($category)
     {
         $parameters = $this->initControllerBag();
-        $parameters->set('paginator', $this->valuelistPaginator->createPaginator(array('category' => $category)));
+        $parameters->set('valuelists',
+            $this->valuelistManager->getRepository()->findByCriteria(array('category' => $category)));
 
         return $this->templating->renderResponse('NuxiaValuelistBundle:Admin:index.html.twig', $parameters->all());
     }
 
     /**
-     * @param $category
+     * @param Request $request
+     * @param string  $category
      *
-     * @throws \Symfony\Component\Security\Core\Exception\AccessDeniedException
-     *
-     * @return \Symfony\Component\HttpFoundation\RedirectResponse|\Symfony\Component\HttpFoundation\Response
+     * @return RedirectResponse|\Symfony\Component\HttpFoundation\Response
      */
     public function newAction(Request $request, $category)
     {
@@ -113,6 +100,7 @@ class AdminController extends AbstractController
         $form = $this->valuelistFormHandler->getForm();
         if ($form->isValid()) {
             $request->getSession()->getFlashBag()->add('success', 'valuelist.' . $category . '.new.success');
+
             return $this->redirectAction($form->getData()->getCategory());
         }
 
@@ -122,12 +110,11 @@ class AdminController extends AbstractController
     }
 
     /**
-     * @param $id
-     * @param $category
+     * @param Request $request
+     * @param int     $id
+     * @param string  $category
      *
-     * @throws \Symfony\Component\Security\Core\Exception\AccessDeniedException
-     *
-     * @return \Symfony\Component\HttpFoundation\RedirectResponse|\Symfony\Component\HttpFoundation\Response
+     * @return RedirectResponse|\Symfony\Component\HttpFoundation\Response
      */
     public function editAction(Request $request, $id, $category)
     {
@@ -136,6 +123,7 @@ class AdminController extends AbstractController
 
         if ($this->valuelistFormHandler->process($valuelist)) {
             $request->getSession()->getFlashBag()->add('success', 'valuelist.' . $category . '.edit.success');
+
             return $this->redirectAction($valuelist->getCategory());
         }
         $parameters->set('form', $this->valuelistFormHandler->getForm()->createView());
@@ -144,10 +132,11 @@ class AdminController extends AbstractController
     }
 
     /**
-     * @param $id
-     * @param $category
-     * @return \Symfony\Component\HttpFoundation\RedirectResponse
-     * @throws \Symfony\Component\Security\Core\Exception\AccessDeniedException
+     * @param Request $request
+     * @param int     $id
+     * @param string  $category
+     *
+     * @return RedirectResponse
      */
     public function deleteAction(Request $request, $id, $category)
     {
@@ -170,19 +159,21 @@ class AdminController extends AbstractController
     }
 
     /**
-     * @param  array $criteria
+     * @param array $criteria
      * @param $type
      *
-     * @throws \Symfony\Component\HttpKernel\Exception\NotFoundHttpException
+     * @throws NotFoundHttpException
      *
      * @return array
      */
     protected function getValuelist(array $criteria, $type)
     {
         $valuelist = $this->valuelistManager->getControllerObject($criteria, $type);
+
         if ($valuelist === null) {
             throw new NotFoundHttpException();
         }
+
         return $valuelist;
     }
 

@@ -33,7 +33,6 @@ class NuxiaValuelistExtension extends Extension
         $enabled = $config['admin']['enabled'];
         if ($enabled === true) {
             $loader->load('services/admin.yml');
-            $container->setParameter('nuxia_valuelist.admin.paginator.limit', $config['admin']['paginator']['limit']);
             $categories = $config['admin']['categories'];
             $container->setParameter('nuxia_valuelist.admin.categories', $categories);
             $container->setParameter(

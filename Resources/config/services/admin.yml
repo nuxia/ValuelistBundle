@@ -9,17 +9,8 @@ services:
         calls:
             - [ "setSecurityManager", [ "@nuxia.security.manager" ] ]
             - [ "setValuelistManager", [ "@nuxia_valuelist.manager" ] ]
-            - [ "setValuelistPaginator", [ "@nuxia_valuelist.paginator" ] ]
             - [ "setValuelistFormHandler", [ "@nuxia_valuelist.form.handler" ] ]
             - [ "setCategories", [ "%nuxia_valuelist.admin.categories%" ] ]
-
-    nuxia_valuelist.paginator:
-        parent: "nuxia.paginator.default"
-        class: "Nuxia\ValuelistBundle\\Pager\ValuelistPaginator"
-        public: false
-        calls:
-            - [ "setValuelistManager", [ "@nuxia_valuelist.manager" ] ]
-            - [ "setLimit", ["%nuxia_valuelist.admin.paginator.limit%"] ]
 
     nuxia_valuelist.form.type:
         class: "Nuxia\ValuelistBundle\Form\Type\ValuelistType"

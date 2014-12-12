@@ -21,12 +21,6 @@ class Configuration implements ConfigurationInterface
                     ->isRequired()
                     ->canBeDisabled()
                         ->children()
-                            ->arrayNode('paginator')
-                                ->addDefaultsIfNotSet()
-                                ->children()
-                                    ->integerNode('limit')->min(1)->defaultValue(20)->end()
-                                ->end()
-                            ->end()
                             ->arrayNode('categories')
                                 ->isRequired()
                                 ->requiresAtLeastOneElement()
@@ -39,6 +33,7 @@ class Configuration implements ConfigurationInterface
                 ->end()
             ->end();
         //@formatter:on
+
         return $treeBuilder;
     }
 }
