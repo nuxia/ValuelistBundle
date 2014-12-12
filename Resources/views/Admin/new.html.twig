@@ -1,14 +1,16 @@
 {% extends 'NuxiaValuelistBundle:Admin:base.html.twig' %}
 
+{% trans_default_domain 'NuxiaValuelist' %}
+
 {% block title_content %}
-    {{ ('valuelist.' ~ category ~ '.new.title')|trans({}, 'messages') }}
+    {{ ('valuelist.' ~ category ~ '.new.title')|trans }}
 {% endblock %}
 
 {% block seo %}
-    <title>{{ ('valuelist.' ~ category ~ '.new.title')|trans({}, 'messages') }}</title>
-    <meta content="{{ ('valuelist.' ~ category ~ '.new.title')|trans({}, 'messages') }}" name="title">
+    <title>{{ ('valuelist.' ~ category ~ '.new.title')|trans }}</title>
+    <meta content="{{ ('valuelist.' ~ category ~ '.new.title')|trans }}" name="title">
 {% endblock %}
 
 {% block content %}
-    {% include 'NuxiaValuelistBundle:Admin:form.html.twig' %}
+    {{ include('NuxiaValuelistBundle:Admin:form.html.twig', {form: form}, with_context = false) }}
 {% endblock %}

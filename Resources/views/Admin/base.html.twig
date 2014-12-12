@@ -1,6 +1,4 @@
-{% extends 'NuxiaValuelistBundle::base.html.twig' %}
-
-{% import 'NuxiaValuelistBundle:Macro:valuelist.html.twig' as valuelist_macro %}
+{% extends 'NuxiaValuelistBundle::layout.html.twig' %}
 
 {% block nav %}
     {{ render(controller('nuxia_valuelist.admin.controller:navAction', {})) }}

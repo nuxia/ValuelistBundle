@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="{{ app.request.locale }}">
+<head>
+    <meta charset="UTF-8"/>
+</head>
+
+<body>
+    {% block flashbag %}
+        {% for type, flashes in app.session.flashbag.all() %}
+            {% for flash in flashes %}
+                <div class="alert alert-{{ type }}{% if flash.autoclose %} autoclose{% endif %}">{{ flash.message|trans(flash.translation_parameters, 'flash')|raw }}
+                    <a class="close" data-dismiss="alert" href="#">{{ close_html|default('&times;')|raw }}</a>
+                </div>
+            {% endfor %}
+        {% endfor %}
+    {% endblock %}
+    <div>{% block nav %}{% endblock nav %}
+    </div>
+    <div>
+        {% block content %}{% endblock content %}
+    </div>
+</body>
+</html>

@@ -28,7 +28,7 @@ Here are a few rules to follow in order to ease code reviews, and discussions be
 * You **MUST** Toutes les traductions doivent être utilisé le translation_domain par défaut (trans) et le translation domain par défaut doit être NuxiaValueList
 * You **MUST** Il faut utiliser les localisations de template avec : pour pouvoir les surcharger dans app (Bundle:Directory:template.html.twig)
 * You **MUST** Dans les form type, il faut préciser le trnaslation_domain sur chaque champ afin d'être le plus flexible possible
-* You **MUST** Dans le validation.yml 
+* You **MUST** Dans le validation.yml les champs doivent TOUS être sous un validation_groups et les messages doivent être uniques
 
 Please, write [commit messages that make sense](http://tbaggery.com/2008/04/19/a-note-about-git-commit-messages.html), and [rebase your branch](http://git-scm.com/book/en/Git-Branching-Rebasing) before submitting your Pull Request.
 

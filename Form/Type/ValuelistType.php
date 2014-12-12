@@ -28,9 +28,19 @@ class ValuelistType extends AbstractType
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $builder->add('code', 'text', array('read_only' => $builder->getData()->getId() !== null));
-        $builder->add('label', 'text');
-        $builder->add('value', 'number', array('invalid_message' => 'field.number.invalid', 'required' => false));
+        $builder->add('code', 'text', array(
+            'read_only' => !$builder->getData()->isNew(),
+            'translation_domain' => 'NuxiaValueList'
+        ));
+
+        $builder->add('label', 'text', array('translation_domain' => 'NuxiaValueList'));
+
+        $builder->add('value', 'number', array(
+            'invalid_message' => 'valuelist.value.invalid_number',
+            'required' => false,
+            'translation_domain' => 'NuxiaValueList'
+        ));
+        $builder->add('submit', 'submit', array('translation_domain' => 'NuxiaValueList'));
     }
 
     /**
@@ -41,14 +51,7 @@ class ValuelistType extends AbstractType
         $view->children['code']->vars['label'] = 'valuelist.code.label';
         $view->children['label']->vars['label'] = 'valuelist.label.label';
         $view->children['value']->vars['label'] = 'valuelist.value.label';
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getParent()
-    {
-        return 'nuxia_form';
+        $view->children['submit']->vars['label'] = 'valuelist.submit.label';
     }
 
     /**

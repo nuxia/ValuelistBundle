@@ -277,4 +277,12 @@ class Valuelist
 
         return $this;
     }
+
+    /**
+     * @return bool
+     */
+    public function isNew()
+    {
+        return $this->id === null;
+    }
 }

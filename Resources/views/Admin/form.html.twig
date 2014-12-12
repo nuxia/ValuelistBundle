@@ -1,20 +1,13 @@
 {% import 'NuxiaValuelistBundle:Macro:valuelist.html.twig' as valuelist_macro %}
 
-{{ form_start(form, {'attr': {'novalidate': 'novalidate' }}) }}
+{% trans_default_domain 'NuxiaValuelist' %}
 
 {% block form_content %}
+    {{ form_start(form, {'attr': {'novalidate': 'novalidate' }}) }}
     {{ form_widget(form) }}
-{% endblock %}
+    {{ form_end(form) }}
+{% endblock form_content %}
 
-{% block form_actions_tag %}
-    <div class="form-actions">
-        {{ form_row(form.submit) }}
-        {% block form_actions_content %}
-            <a href="{{ valuelist_macro.index_url(category) }}" title="{{ 'back'|trans({}, 'messages') }}">
-                {{ 'back'|trans({}, 'messages') }}
-            </a>
-        {% endblock %}
-    </div>
+{% block form_actions %}
+    <a href="{{ valuelist_macro.index_url(category) }}" title="{{ 'back'|trans }}">{{ 'back'|trans) }}</a>
 {% endblock %}
-
-{{ form_end(form) }}

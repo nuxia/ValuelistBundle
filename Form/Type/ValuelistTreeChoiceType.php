@@ -2,10 +2,11 @@
 
 namespace Nuxia\ValuelistBundle\Form\Type;
 
+use Nuxia\ValuelistBundle\Helper\ValuelistParser;
 use Symfony\Component\OptionsResolver\Options;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 
-class ValuelistChoiceType extends AbstractValuelistChoiceType
+class ValuelistTreeChoiceType extends AbstractValuelistChoiceType
 {
     /**
      * {@inheritdoc}
@@ -14,20 +15,18 @@ class ValuelistChoiceType extends AbstractValuelistChoiceType
     {
         parent::setDefaultOptions($resolver);
         $resolver->setDefaults(array(
-            'property' => 'code',
             'choices' => function (Options $options) {
-                return $this->valuelistManager->findStmtByCriteria(
-                    $options['locale'], $options['category'], $options['parent'], $options['criteria'], $options['property']
-                );
+                return ValuelistParser::valuelistToTreeChoices($this->valuelistManager->findByCriteria(
+                    $options['locale'], $options['category'], $options['parent'], $options['criteria']
+                ));
             },
         ));
     }
-
     /**
      * {@inheritdoc}
      */
     public function getName()
     {
-        return 'nuxia_valuelist_valuelist_choice';
+        return 'nuxia_valuelist_tree_valuelist_choice';
     }
 }

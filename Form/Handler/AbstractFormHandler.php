@@ -47,9 +47,7 @@ abstract class AbstractFormHandler
     }
 
     /**
-     * @throws \RuntimeException
-     *
-     * @return \Symfony\Component\Form\FormInterface
+     * {@inheritDoc}
      */
     public function getForm()
     {

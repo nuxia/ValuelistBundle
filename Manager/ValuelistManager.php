@@ -12,10 +12,10 @@ class ValuelistManager extends AbstractManager implements ValuelistManagerInterf
     protected $cache = array();
 
     /**
-     * @param string $locale
-     * @param string $category
-     * @param string $parent
-     * @param array  $criteria
+     * @param  string $locale
+     * @param  string $category
+     * @param  string $parent
+     * @param  array  $criteria
      *
      * @return array
      */
@@ -31,9 +31,9 @@ class ValuelistManager extends AbstractManager implements ValuelistManagerInterf
     }
 
     /**
-     * @param array $defaults
+     * @param  array $defaults
      *
-     * @return \Nuxia\ValuelistBundle\Entity\Valuelist
+     * @return Valuelist
      */
     public function create(array $defaults = array())
     {
@@ -90,14 +90,7 @@ class ValuelistManager extends AbstractManager implements ValuelistManagerInterf
     }
 
     /**
-     * @param string $locale
-     * @param string $category
-     * @param string $parent
-     * @param array  $criteria
-     * @param string $type
-     * @param array  $parameters
-     *
-     * @return array
+     * {@inheritDoc}
      */
     public function findStmtByCriteria(
         $locale,
@@ -113,26 +106,24 @@ class ValuelistManager extends AbstractManager implements ValuelistManagerInterf
     }
 
     /**
-     * @param string $locale
-     * @param string $category
-     * @param string $parent
-     * @param array  $criteria
-     * @param string $type
-     * @param array  $parameters
-     *
-     * @return \Nuxia\ValuelistBundle\Entity\Valuelist[]
+     * {@inheritDoc}
      */
-    public function findByCriteria(
-        $locale,
-        $category,
-        $parent = 'null',
-        array $criteria,
-        $type = 'default',
-        array $parameters = array()
-    ) {
+    public function findByCriteria($locale, $category, $parent = 'null', array $criteria = array(), $type = 'default', array $parameters = array())
+    {
         $criteria = $this->getCriteria($locale, $category, $parent, $criteria);
 
         return $this->getRepository()->findByCriteria($criteria, $type, $parameters);
+
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function findOneByCriteria($locale, $category, $code)
+    {
+        $criteria = $this->getCriteria($locale, $category);
+        $criteria['code'] = $code;
+        return $this->getRepository()->findOneByCriteria($criteria);
 
     }
 }

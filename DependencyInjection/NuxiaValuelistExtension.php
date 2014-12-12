@@ -19,6 +19,7 @@ class NuxiaValuelistExtension extends Extension
 
         $loader = new YamlFileLoader($container, new FileLocator(__DIR__ . '/../Resources/config'));
         $loader->load('services/default.yml');
+        $loader->load('services/form.yml');
         $this->loadAdmin($config, $container, $loader);
         unset($config['fixtures']);
     }
