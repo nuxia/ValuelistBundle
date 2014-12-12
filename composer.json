@@ -8,6 +8,10 @@
     },
     "require": {
         "php": ">=5.4",
-        "symfony/framework-bundle": "~2.0"
+        "symfony/symfony": "~2.3",
+        "doctrine/orm": "~2.4"
     },
+    "require-dev": {
+        "doctrine/data-fixtures": "1.0"
+    }
 }
