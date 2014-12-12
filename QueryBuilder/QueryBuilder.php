@@ -13,7 +13,7 @@ class QueryBuilder extends DoctrineQueryBuilder
      */
     public function __construct($entityName, $alias, $indexBy = null)
     {
-        $this->setSelect($alias);
+        $this->select($alias);
         $this->from($entityName, $alias, $indexBy);
     }
 }

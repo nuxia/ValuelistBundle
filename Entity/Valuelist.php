@@ -3,12 +3,12 @@
 namespace Nuxia\ValuelistBundle\Entity;
 
 use Doctrine\Common\Collections\ArrayCollection;
-use Nuxia\Component\AbstractModel;
+use Symfony\Component\PropertyAccess\PropertyAccess;
 
 /**
  * Valuelist
  */
-class Valuelist extends AbstractModel
+class Valuelist
 {
     /**
      * @var integer
@@ -41,12 +41,12 @@ class Valuelist extends AbstractModel
     private $value;
 
     /**
-     * @var \Nuxia\ValuelistBundle\Entity\Valuelist
+     * @var Valuelist
      */
     private $parent;
 
     /**
-     * @var \Doctrine\Common\Collections\ArrayCollection
+     * @var ArrayCollection
      */
     private $children;
 
@@ -139,6 +139,7 @@ class Valuelist extends AbstractModel
      * Set label
      *
      * @param  string    $label
+     *
      * @return Valuelist
      */
     public function setLabel($label)
@@ -162,7 +163,8 @@ class Valuelist extends AbstractModel
      * Set label
      *
      * @param  float $value
-     * @return value
+     *
+     * @return Valuelist
      */
     public function setValue($value)
     {
@@ -174,7 +176,7 @@ class Valuelist extends AbstractModel
     /**
      * Get value
      *
-     * @return value
+     * @return string
      */
     public function getValue()
     {
@@ -182,12 +184,11 @@ class Valuelist extends AbstractModel
     }
 
     /**
-     * Set parent
+     * @param Valuelist $parent
      *
-     * @param  \Nuxia\ValuelistBundle\Entity\Valuelist $valuelist
      * @return Valuelist
      */
-    public function setParent(\Nuxia\ValuelistBundle\Entity\Valuelist $parent = null)
+    public function setParent(Valuelist $parent = null)
     {
         $this->parent = $parent;
 
@@ -206,9 +207,10 @@ class Valuelist extends AbstractModel
 
     /**
      * @param  Valuelist $child
-     * @return $this
+     *
+     * @return Valuelist
      */
-    public function addChild(\Nuxia\ValuelistBundle\Entity\Valuelist $child)
+    public function addChild(Valuelist $child)
     {
         if ($child->getParent() === null) {
             $child->setParent($this);
@@ -221,10 +223,14 @@ class Valuelist extends AbstractModel
 
     /**
      * @param Valuelist $child
+     *
+     * @return Valuelist
      */
-    public function removeChild(\Nuxia\ValuelistBundle\Entity\Valuelist $child)
+    public function removeChild(Valuelist $child)
     {
         $this->children->removeElement($child);
+
+        return $this;
     }
 
     /**
@@ -237,11 +243,38 @@ class Valuelist extends AbstractModel
 
     /**
      * @param ArrayCollection $children
+     *
+     * @return Valuelist
      */
     public function setChildren(ArrayCollection $children)
     {
         foreach ($children as $child) {
             $this->addChild($child);
         }
+
+        return $this;
+    }
+
+    /**
+     * @param string $input
+     * @param array  $fields
+     *
+     * @return Valuelist
+     */
+    public function fromArrayOrObject($input, array $fields = array())
+    {
+        $accessor = PropertyAccess::createPropertyAccessor();
+        $isArray = is_array($input);
+
+        if ($isArray && count($fields) === 0) {
+            $fields = array_keys($input);
+        }
+
+        foreach ($fields as $field) {
+            $path = $isArray ? '[' . $field . ']' : $field;
+            $accessor->setValue($this, $field, $accessor->getValue($input, $path));
+        }
+
+        return $this;
     }
 }

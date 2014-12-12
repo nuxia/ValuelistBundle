@@ -9,9 +9,9 @@ interface ValuelistManagerInterface
      * @param string $category
      * @param string $parent
      * @param string $type
-     * @param bool   $useCache
+     * @param bool   $cache
      *
-     * @return array
+     * @return mixed
      */
     public function getValuelist($locale, $category, $parent = 'null', $type = 'default', $cache = true);
 

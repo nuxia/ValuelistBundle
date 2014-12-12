@@ -2,7 +2,6 @@
 
 namespace Nuxia\ValuelistBundle\Manager;
 
-use Doctrine\Common\Persistence\ObjectManager;
 use Nuxia\ValuelistBundle\Entity\Valuelist;
 
 class ValuelistManager extends AbstractManager implements ValuelistManagerInterface
@@ -11,14 +10,6 @@ class ValuelistManager extends AbstractManager implements ValuelistManagerInterf
      * @var array
      */
     protected $cache = array();
-
-    /**
-     * @return string
-     */
-    private function getClassName()
-    {
-        return 'Nuxia\ValuelistBundle\Entity\Valuelist';
-    }
 
     /**
      * @param string $locale
@@ -47,8 +38,10 @@ class ValuelistManager extends AbstractManager implements ValuelistManagerInterf
     public function create(array $defaults = array())
     {
         $class = $this->getClassname();
+        /** @var Valuelist $valuelist */
         $valuelist = new $class();
         $valuelist->fromArrayOrObject($defaults);
+
         return $valuelist;
     }
 
@@ -62,6 +55,7 @@ class ValuelistManager extends AbstractManager implements ValuelistManagerInterf
             if ($useCache === false) {
                 return $valuelist;
             }
+
             $this->cache[$category][$locale][$parent] = $valuelist;
         }
 
@@ -74,6 +68,7 @@ class ValuelistManager extends AbstractManager implements ValuelistManagerInterf
     public function getValue($locale, $category, $code, $parent = 'null')
     {
         $valuelist = $this->getValuelist($locale, $category, $parent);
+
         if (array_key_exists($code, $valuelist)) {
             return $valuelist[$code];
         } else {
@@ -87,9 +82,10 @@ class ValuelistManager extends AbstractManager implements ValuelistManagerInterf
      */
     public function persist(Valuelist $valuelist, $andFlush = true)
     {
-        $this->em->persist($valuelist);
+        $this->entityManager->persist($valuelist);
+
         if ($andFlush === true) {
-            $this->em->flush();
+            $this->entityManager->flush();
         }
     }
 
