@@ -2,6 +2,7 @@
 
 namespace Nuxia\ValuelistBundle\QueryBuilder;
 
+//@TODO not used yet
 class ValuelistQueryBuilder extends QueryBuilder
 {
     /**

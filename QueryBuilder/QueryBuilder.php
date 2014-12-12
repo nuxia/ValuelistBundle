@@ -4,6 +4,7 @@ namespace Nuxia\ValuelistBundle\QueryBuilder;
 
 use Doctrine\ORM\QueryBuilder as DoctrineQueryBuilder;
 
+//@TODO not used yet
 class QueryBuilder extends DoctrineQueryBuilder
 {
     /**

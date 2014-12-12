@@ -4,8 +4,7 @@ namespace Nuxia\ValuelistBundle\Manager;
 
 use Nuxia\ValuelistBundle\Entity\Valuelist;
 
-class AdminValuelistManager extends ValuelistManager implements
-    AdminValuelistManagerInterface
+class AdminValuelistManager extends ValuelistManager implements AdminValuelistManagerInterface
 {
     /**
      * @var array
@@ -21,8 +20,7 @@ class AdminValuelistManager extends ValuelistManager implements
     }
 
     /**
-     * @param Valuelist $valuelist
-     * @param bool      $andFlush
+     * {@inheritDoc}
      */
     public function delete(Valuelist $valuelist, $andFlush = true)
     {
@@ -33,22 +31,15 @@ class AdminValuelistManager extends ValuelistManager implements
     }
 
     /**
-     * @param array  $criteria
-     * @param string $type
-     * @param array  $parameters
-     *
-     * @return mixed
+     * {@inheritDoc}
      */
-    public function getControllerObject(array $criteria, $type = 'default', array $parameters = array())
+    public function getCategories()
     {
-        return $this->getRepository()->findOneByCriteria($criteria, $type, $parameters);
+        return $this->categories;
     }
 
     /**
-     * @param $action
-     * @param $category
-     *
-     * @return bool
+     * {@inheritDoc}
      */
     public function isActionExistsOnCategory($action, $category)
     {

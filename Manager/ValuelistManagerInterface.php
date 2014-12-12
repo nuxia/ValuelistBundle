@@ -3,9 +3,15 @@
 namespace Nuxia\ValuelistBundle\Manager;
 
 use Nuxia\ValuelistBundle\Entity\Valuelist;
+use Nuxia\ValuelistBundle\Repository\ValuelistRepository;
 
 interface ValuelistManagerInterface
 {
+    /**
+     * @return ValuelistRepository
+     */
+    public function getRepository();
+
     /**
      * @param  string $locale
      * @param  string $category

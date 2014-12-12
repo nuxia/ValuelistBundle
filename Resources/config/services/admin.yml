@@ -1,16 +1,17 @@
 parameters:
     nuxia_valuelist.form.type: "nuxia_valuelist_valuelist"
-    nuxia_valuelist.manager.class: "Nuxia\ValuelistBundle\Manager\AdminValuelistManager"
 
 services:
     nuxia_valuelist.admin.controller:
         parent: "nuxia.controller.abstract"
         class: "Nuxia\ValuelistBundle\Controller\AdminController"
+        public: false
         calls:
-            - [ "setSecurityManager", [ "@nuxia.security.manager" ] ]
+            - [ "setRouter", [ "@router" ] ]
+            - [ "setFlashBag", [ "@?session.flash_bag" ] ]
+            - [ "setTemplating", [ "@templating" ] ]
             - [ "setValuelistManager", [ "@nuxia_valuelist.manager" ] ]
             - [ "setValuelistFormHandler", [ "@nuxia_valuelist.form.handler" ] ]
-            - [ "setCategories", [ "%nuxia_valuelist.admin.categories%" ] ]
 
     nuxia_valuelist.form.type:
         class: "Nuxia\ValuelistBundle\Form\Type\ValuelistType"

@@ -26,7 +26,7 @@ Nuxia\ValuelistBundle\Entity\Valuelist:
     manyToOne:
         parent:
             targetEntity: "Nuxia\ValuelistBundle\Entity\Valuelist"
-            inversedBy: children
+            inversedBy: "children"
             joinColumn:
                 name: "valuelist_id"
                 referencedColumnName: "id"

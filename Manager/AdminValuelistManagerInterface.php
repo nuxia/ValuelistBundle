@@ -2,12 +2,27 @@
 
 namespace Nuxia\ValuelistBundle\Manager;
 
+use Nuxia\ValuelistBundle\Entity\Valuelist;
+
 interface AdminValuelistManagerInterface extends ValuelistManagerInterface
 {
     /**
-     * @param $action
-     * @param $category
-     * @return mixed
+     * @param  string $action
+     * @param  string $category
+     *
+     * @return bool
      */
     public function isActionExistsOnCategory($action, $category);
+
+    /**
+     * @return array
+     */
+    public function getCategories();
+
+    /**
+     * @param  Valuelist $valuelist
+     *
+     * @return bool
+     */
+    public function delete(Valuelist $valuelist);
 }
