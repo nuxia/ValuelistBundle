@@ -2,11 +2,9 @@
 
 namespace Nuxia\ValuelistBundle\Manager;
 
-use Nuxia\Component\Doctrine\Manager\ControllerManagerInterface;
 use Nuxia\ValuelistBundle\Entity\Valuelist;
 
 class AdminValuelistManager extends ValuelistManager implements
-    ControllerManagerInterface,
     AdminValuelistManagerInterface
 {
     /**
@@ -28,9 +26,9 @@ class AdminValuelistManager extends ValuelistManager implements
      */
     public function delete(Valuelist $valuelist, $andFlush = true)
     {
-        $this->em->remove($valuelist);
+        $this->entityManager->remove($valuelist);
         if ($andFlush === true) {
-            $this->em->flush();
+            $this->entityManager->flush();
         }
     }
 
