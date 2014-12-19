@@ -1,7 +1,7 @@
 ValuelistBundle
 =============
 
-Ajouter une description avec feature
+[![SensioLabsInsight](https://insight.sensiolabs.com/projects/cc802b11-fcd5-4181-baa3-ee1d016b38bd/big.png)](https://insight.sensiolabs.com/projects/cc802b11-fcd5-4181-baa3-ee1d016b38bd)
 
 Documentation
 -------------
