@@ -18,6 +18,7 @@
 ### Evolution
 
 Donner la possibilité de récupérer des `valuelist` globales + parent
+Add a value field
 
 Exemple sur GET :
 
