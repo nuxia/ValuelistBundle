@@ -19,7 +19,6 @@ class NuxiaValuelistExtension extends Extension
 
         $loader = new YamlFileLoader($container, new FileLocator(__DIR__ . '/../Resources/config'));
         $loader->load('services/default.yml');
-        $loader->load('services/form.yml');
         $this->loadAdmin($config, $container, $loader);
         unset($config['fixtures']);
     }
@@ -34,6 +33,7 @@ class NuxiaValuelistExtension extends Extension
         $enabled = $config['admin']['enabled'];
         if ($enabled === true) {
             $loader->load('services/admin.yml');
+            $container->setParameter('nuxia_valuelist.admin.paginator.limit', $config['admin']['paginator']['limit']);
             $categories = $config['admin']['categories'];
             $container->setParameter('nuxia_valuelist.admin.categories', $categories);
             $container->setParameter(

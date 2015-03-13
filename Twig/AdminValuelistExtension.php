@@ -18,8 +18,7 @@ class AdminValuelistExtension extends ValuelistExtension
     /**
      * @param $action
      * @param $category
-     *
-     * @return bool
+     * @return mixed
      */
     public function isActionExistsOnCategory($action, $category)
     {

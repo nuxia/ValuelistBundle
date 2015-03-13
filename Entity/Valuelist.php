@@ -3,11 +3,8 @@
 namespace Nuxia\ValuelistBundle\Entity;
 
 use Doctrine\Common\Collections\ArrayCollection;
-use Symfony\Component\PropertyAccess\PropertyAccess;
 
-/**
- * Valuelist
- */
+//@TODO probleme de droit avec mold car c'est objet instance AbstractModel
 class Valuelist
 {
     /**
@@ -41,12 +38,12 @@ class Valuelist
     private $value;
 
     /**
-     * @var Valuelist
+     * @var \Nuxia\ValuelistBundle\Entity\Valuelist
      */
     private $parent;
 
     /**
-     * @var ArrayCollection
+     * @var \Doctrine\Common\Collections\ArrayCollection
      */
     private $children;
 
@@ -139,7 +136,6 @@ class Valuelist
      * Set label
      *
      * @param  string    $label
-     *
      * @return Valuelist
      */
     public function setLabel($label)
@@ -163,8 +159,7 @@ class Valuelist
      * Set label
      *
      * @param  float $value
-     *
-     * @return Valuelist
+     * @return value
      */
     public function setValue($value)
     {
@@ -176,7 +171,7 @@ class Valuelist
     /**
      * Get value
      *
-     * @return string
+     * @return value
      */
     public function getValue()
     {
@@ -184,11 +179,12 @@ class Valuelist
     }
 
     /**
-     * @param Valuelist $parent
+     * Set parent
      *
+     * @param  \Nuxia\ValuelistBundle\Entity\Valuelist $valuelist
      * @return Valuelist
      */
-    public function setParent(Valuelist $parent = null)
+    public function setParent(\Nuxia\ValuelistBundle\Entity\Valuelist $parent = null)
     {
         $this->parent = $parent;
 
@@ -207,10 +203,9 @@ class Valuelist
 
     /**
      * @param  Valuelist $child
-     *
-     * @return Valuelist
+     * @return $this
      */
-    public function addChild(Valuelist $child)
+    public function addChild(\Nuxia\ValuelistBundle\Entity\Valuelist $child)
     {
         if ($child->getParent() === null) {
             $child->setParent($this);
@@ -223,14 +218,10 @@ class Valuelist
 
     /**
      * @param Valuelist $child
-     *
-     * @return Valuelist
      */
-    public function removeChild(Valuelist $child)
+    public function removeChild(\Nuxia\ValuelistBundle\Entity\Valuelist $child)
     {
         $this->children->removeElement($child);
-
-        return $this;
     }
 
     /**
@@ -243,46 +234,11 @@ class Valuelist
 
     /**
      * @param ArrayCollection $children
-     *
-     * @return Valuelist
      */
     public function setChildren(ArrayCollection $children)
     {
         foreach ($children as $child) {
             $this->addChild($child);
         }
-
-        return $this;
-    }
-
-    /**
-     * @param string $input
-     * @param array  $fields
-     *
-     * @return Valuelist
-     */
-    public function fromArrayOrObject($input, array $fields = array())
-    {
-        $accessor = PropertyAccess::createPropertyAccessor();
-        $isArray = is_array($input);
-
-        if ($isArray && count($fields) === 0) {
-            $fields = array_keys($input);
-        }
-
-        foreach ($fields as $field) {
-            $path = $isArray ? '[' . $field . ']' : $field;
-            $accessor->setValue($this, $field, $accessor->getValue($input, $path));
-        }
-
-        return $this;
-    }
-
-    /**
-     * @return bool
-     */
-    public function isNew()
-    {
-        return $this->id === null;
     }
 }

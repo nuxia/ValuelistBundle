@@ -4,7 +4,6 @@ namespace Nuxia\ValuelistBundle\QueryBuilder;
 
 use Doctrine\ORM\QueryBuilder as DoctrineQueryBuilder;
 
-//@TODO not used yet
 class QueryBuilder extends DoctrineQueryBuilder
 {
     /**
@@ -14,7 +13,7 @@ class QueryBuilder extends DoctrineQueryBuilder
      */
     public function __construct($entityName, $alias, $indexBy = null)
     {
-        $this->select($alias);
+        $this->setSelect($alias);
         $this->from($entityName, $alias, $indexBy);
     }
 }

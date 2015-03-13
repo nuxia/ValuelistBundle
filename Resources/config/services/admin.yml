@@ -1,17 +1,25 @@
 parameters:
     nuxia_valuelist.form.type: "nuxia_valuelist_valuelist"
+    nuxia_valuelist.manager.class: "Nuxia\ValuelistBundle\Manager\AdminValuelistManager"
 
 services:
     nuxia_valuelist.admin.controller:
         parent: "nuxia.controller.abstract"
         class: "Nuxia\ValuelistBundle\Controller\AdminController"
+        calls:
+            - [ "setSecurityManager", [ "@nuxia.security.manager" ] ]
+            - [ "setValuelistManager", [ "@nuxia_valuelist.manager" ] ]
+            - [ "setValuelistPaginator", [ "@nuxia_valuelist.paginator" ] ]
+            - [ "setValuelistFormHandler", [ "@nuxia_valuelist.form.handler" ] ]
+            - [ "setCategories", [ "%nuxia_valuelist.admin.categories%" ] ]
+
+    nuxia_valuelist.paginator:
+        parent: "nuxia.paginator.default"
+        class: "Nuxia\ValuelistBundle\\Pager\ValuelistPaginator"
         public: false
         calls:
-            - [ "setRouter", [ "@router" ] ]
-            - [ "setFlashBag", [ "@?session.flash_bag" ] ]
-            - [ "setTemplating", [ "@templating" ] ]
             - [ "setValuelistManager", [ "@nuxia_valuelist.manager" ] ]
-            - [ "setValuelistFormHandler", [ "@nuxia_valuelist.form.handler" ] ]
+            - [ "setLimit", ["%nuxia_valuelist.admin.paginator.limit%"] ]
 
     nuxia_valuelist.form.type:
         class: "Nuxia\ValuelistBundle\Form\Type\ValuelistType"

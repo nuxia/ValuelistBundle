@@ -3,5 +3,5 @@
 {% endmacro %}
 
 {% macro index_link(category) %}
-    <a href="{{ _self.index_url(category) }}" title="{{ ('valuelist.' ~ category ~ '.index.link')|trans) }}">{{ ('valuelist.' ~ category ~ '.index.link')|trans }}</a>
+    <a href="{{ _self.index_url(category) }}" title="{{ ('valuelist.' ~ category ~ '.index.link')|trans({}, 'messages') }}">{{ ('valuelist.' ~ category ~ '.index.link')|trans({}, 'messages') }}</a>
 {% endmacro %}

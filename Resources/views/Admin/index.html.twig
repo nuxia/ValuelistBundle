@@ -26,7 +26,7 @@
             {{ table_macro.head('valuelist', fields) }}
         </thead>
         <tbody>
-            {% for valuelist in valuelists %}
+            {% for valuelist in paginator %}
                 <tr>
                     {{ table_macro.row(valuelist, fields) }}
                     {% if valuelist_action_valid('edit', category) or valuelist_action_valid('delete', category) %}
@@ -47,4 +47,5 @@
             {% endfor %}
         </tbody>
     </table>
+    {{ knp_pagination_render(paginator) }}
 {% endblock %}

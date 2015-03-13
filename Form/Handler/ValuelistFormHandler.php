@@ -34,20 +34,15 @@ class ValuelistFormHandler extends AbstractFormHandler implements ValuelistFormH
     }
 
     /**
-     * @param Valuelist $data
+     * @param null $data
      * @param array $options
      */
-    protected function createForm(Valuelist $valuelist, array $options = array())
+    protected function createForm($data = null, array $options = array())
     {
-        $options['data'] = $valuelist;
-        $this->form = $this->formFactory->create($this->formName, $valuelist, $this->getFormOptions($valuelist));
-    }
-
-    protected function getFormOptions(Valuelist $valuelist)
-    {
-        return array(
-            'validation_groups' => array($valuelist->isNew() ? 'new' : 'edit'),
-        );
+        if ($data !== null) {
+            $options['data'] = $data;
+        }
+        $this->form = $this->formFactory->create($this->formName, $data, $options);
     }
 
     /**

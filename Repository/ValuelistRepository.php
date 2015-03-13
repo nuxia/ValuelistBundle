@@ -2,11 +2,10 @@
 
 namespace Nuxia\ValuelistBundle\Repository;
 
-use Doctrine\ORM\EntityRepository;
 use Doctrine\ORM\QueryBuilder;
 use Symfony\Component\HttpFoundation\ParameterBag;
 
-class ValuelistRepository extends EntityRepository
+class ValuelistRepository extends BaseEntityRepository
 {
     /**
      * @param $join

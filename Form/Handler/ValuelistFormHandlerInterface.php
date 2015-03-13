@@ -14,9 +14,7 @@ interface ValuelistFormHandlerInterface
      */
     public function process(Valuelist $valuelist = null, array $options = array());
 
-    /**
-     * @throws \RuntimeException
-     *
+    /*
      * @return \Symfony\Component\Form\FormInterface
      */
     public function getForm();

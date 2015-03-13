@@ -8,9 +8,6 @@ use Symfony\Component\HttpKernel\Bundle\Bundle;
 
 class NuxiaValuelistBundle extends Bundle
 {
-    /**
-     * @param ContainerBuilder $container
-     */
     public function build(ContainerBuilder $container)
     {
         $container->addCompilerPass(new SetConfigurationAdminPass());

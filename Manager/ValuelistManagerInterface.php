@@ -3,21 +3,15 @@
 namespace Nuxia\ValuelistBundle\Manager;
 
 use Nuxia\ValuelistBundle\Entity\Valuelist;
-use Nuxia\ValuelistBundle\Repository\ValuelistRepository;
 
 interface ValuelistManagerInterface
 {
-    /**
-     * @return ValuelistRepository
-     */
-    public function getRepository();
-
     /**
      * @param  string $locale
      * @param  string $category
      * @param  string $parent
      * @param  string $type
-     * @param  bool   $cache
+     * @param  bool   $useCache
      *
      * @return array
      */
@@ -29,22 +23,11 @@ interface ValuelistManagerInterface
      * @param  string $code
      * @param  string $parent
      *
-     * @return array|null
+     * @return null|array
      */
     public function getValue($locale, $category, $code, $parent = 'null');
 
-    /**
-     * @param  string $locale
-     * @param  string $category
-     * @param  string $parent
-     * @param  array  $criteria
-     * @param  string $type
-     * @param  array  $parameters
-     *
-     * @return array
-     */
-    public function findStmtByCriteria($locale, $category, $parent = 'null', array $criteria, $type = 'default', array $parameters = array());
-
+    //@TODO useCache doit utiliser findByCriteria pour eviter de l'exposer via l'interface
     /**
      * @param  string $locale
      * @param  string $category
@@ -65,4 +48,16 @@ interface ValuelistManagerInterface
      * @return Valuelist|null
      */
     public function findOneByCriteria($locale, $category, $code);
+
+    /**
+     * @param  string $locale
+     * @param  string $category
+     * @param  string $parent
+     * @param  array  $criteria
+     * @param  string $type
+     * @param  array  $parameters
+     *
+     * @return array
+     */
+    public function findStmtByCriteria($locale, $category, $parent = 'null', array $criteria, $type = 'default', array $parameters = array());
 }

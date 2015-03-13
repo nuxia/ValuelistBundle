@@ -2,37 +2,26 @@
 
 namespace Nuxia\ValuelistBundle\Manager;
 
-use Doctrine\ORM\EntityManagerInterface;
-use Nuxia\ValuelistBundle\Repository\ValuelistRepository;
-
 abstract class AbstractManager
 {
     /**
-     * @var EntityManagerInterface
+     * @var ObjectManager
      */
     protected $entityManager;
 
     /**
-     * @param EntityManagerInterface $entityManager
+     * @param ObjectManager $entityManager
      */
-    public function setEntityManager(EntityManagerInterface $entityManager)
+    public function setEntityManager(ObjectManager $entityManager)
     {
         $this->entityManager = $entityManager;
     }
 
     /**
-     * @return ValuelistRepository
+     * @return \Doctrine\Common\Persistence\ObjectRepository
      */
     public function getRepository()
     {
         return $this->entityManager->getRepository($this->getClassName());
-    }
-
-    /**
-     * @return string
-     */
-    protected function getClassName()
-    {
-        return 'Nuxia\ValuelistBundle\Entity\Valuelist';
     }
 }

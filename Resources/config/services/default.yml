@@ -13,3 +13,17 @@ services:
             - "@nuxia_valuelist.manager"
         tags:
             - { name: "twig.extension" }
+
+    nuxia_valuelist_choice.form.type:
+        class: "Nuxia\ValuelistBundle\Form\Type\ValuelistChoiceType"
+        calls:
+            - [ "setValuelistManager", [ "@nuxia_valuelist.manager" ] ]
+        tags:
+            - { name: "form.type", alias: "nuxia_valuelist_valuelist_choice" }
+
+    nuxia_valuelist_choice_bind.form.type:
+        class: "Nuxia\ValuelistBundle\Form\Type\ValuelistChoiceBindType"
+        arguments:
+            - "@nuxia_valuelist.manager"
+        tags:
+            - { name: "form.type", alias: "nuxia_valuelist_valuelist_bind_choice" }

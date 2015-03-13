@@ -2,7 +2,6 @@
 
 namespace Nuxia\ValuelistBundle\QueryBuilder;
 
-//@TODO not used yet
 class ValuelistQueryBuilder extends QueryBuilder
 {
     /**
@@ -25,7 +24,6 @@ class ValuelistQueryBuilder extends QueryBuilder
         if ($withSelect === true) {
             $this->addSelect('vls_par');
         }
-
         return $this;
     }
 
@@ -37,7 +35,6 @@ class ValuelistQueryBuilder extends QueryBuilder
         $this->leftJoin('vls.children', 'vls_chd', 'WITH', 'vls.language = vls_chd.language');
         $this->leftJoin('vls_chd.children', 'vls_chd_chd');
         $this->addSelect('vls_chd', 'vls_chd_chd');
-
         return $this;
     }
 
@@ -60,7 +57,6 @@ class ValuelistQueryBuilder extends QueryBuilder
     {
         $this->andWhere('vls.' . $field . ' = :' . $field);
         $this->setParameter($field, $value);
-
         return $this;
     }
 
@@ -77,7 +73,6 @@ class ValuelistQueryBuilder extends QueryBuilder
         }
         $this->andWhere('vls_category IN (:languages)');
         $this->setParameter('languages', $languages);
-
         return $this;
     }
-}
+} 

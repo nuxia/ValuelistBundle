@@ -2,9 +2,12 @@
 
 namespace Nuxia\ValuelistBundle\Manager;
 
+use Nuxia\Component\Doctrine\Manager\ControllerManagerInterface;
 use Nuxia\ValuelistBundle\Entity\Valuelist;
 
-class AdminValuelistManager extends ValuelistManager implements AdminValuelistManagerInterface
+class AdminValuelistManager extends ValuelistManager implements
+    ControllerManagerInterface,
+    AdminValuelistManagerInterface
 {
     /**
      * @var array
@@ -20,26 +23,46 @@ class AdminValuelistManager extends ValuelistManager implements AdminValuelistMa
     }
 
     /**
-     * {@inheritDoc}
+     * @param Valuelist $valuelist
+     * @param bool      $andFlush
      */
     public function delete(Valuelist $valuelist, $andFlush = true)
     {
-        $this->entityManager->remove($valuelist);
+        $this->em->remove($valuelist);
         if ($andFlush === true) {
-            $this->entityManager->flush();
+            $this->em->flush();
         }
     }
 
     /**
-     * {@inheritDoc}
+     * @param array  $criteria
+     * @param string $type
+     * @param array  $parameters
+     *
+     * @return mixed
      */
-    public function getCategories()
+    public function getPaginatorTarget(array $criteria, $type = 'list', array $parameters = array())
     {
-        return $this->categories;
+        return $this->getRepository()->getQueryByCriteria($criteria, $type, $parameters);
     }
 
     /**
-     * {@inheritDoc}
+     * @param array  $criteria
+     * @param string $type
+     * @param array  $parameters
+     *
+     * @return mixed
+     */
+    public function getControllerObject(array $criteria, $type = 'default', array $parameters = array())
+    {
+        return $this->getRepository()->findOneByCriteria($criteria, $type, $parameters);
+    }
+
+    /**
+     * @param $action
+     * @param $category
+     *
+     * @return bool
      */
     public function isActionExistsOnCategory($action, $category)
     {

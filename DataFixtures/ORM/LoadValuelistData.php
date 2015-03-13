@@ -5,12 +5,11 @@ namespace Nuxia\ValuelistBundle\DataFixtures\ORM;
 use Doctrine\Common\DataFixtures\AbstractFixture;
 use Doctrine\Common\DataFixtures\OrderedFixtureInterface;
 use Doctrine\Common\Persistence\ObjectManager;
-use Nuxia\Component\Parser;
 use Nuxia\ValuelistBundle\Entity\Valuelist;
 use Symfony\Component\DependencyInjection\ContainerAwareInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\Finder\Finder;
-use Symfony\Component\Yaml\Parser as YamlParser;
+use Symfony\Component\Yaml\Parser;
 
 class LoadValuelistData extends AbstractFixture implements ContainerAwareInterface, OrderedFixtureInterface
 {
@@ -33,11 +32,14 @@ class LoadValuelistData extends AbstractFixture implements ContainerAwareInterfa
     public function load(ObjectManager $manager)
     {
         if (count(glob($this->getValuelistPatternPath())) > 0) {
-            $parser = new YamlParser();
+            $parser = new Parser();
             $finder = Finder::create()->in($this->getValuelistPatternPath())->name('*.yml')->sortByName();
             foreach ($finder->files() as $file) {
                 foreach ($parser->parse(file_get_contents($file->getRealpath())) as $code => $data) {
-                    $values = Parser::filterArrayByKeys($data, array('code', 'label', 'language', 'category', 'value'));
+                    $values = array_intersect_key(
+                        $data,
+                        array_fill_keys(array('code', 'label', 'language', 'category', 'value'), 'buffer')
+                    );
                     if (!isset($data['code'])) {
                         $values['code'] = $code;
                     }

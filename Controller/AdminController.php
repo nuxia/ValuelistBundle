@@ -2,34 +2,25 @@
 
 namespace Nuxia\ValuelistBundle\Controller;
 
-use Nuxia\ValuelistBundle\Entity\Valuelist;
 use Nuxia\ValuelistBundle\Form\Handler\ValuelistFormHandler;
 use Nuxia\ValuelistBundle\Manager\AdminValuelistManagerInterface;
-use Symfony\Bundle\FrameworkBundle\Templating\EngineInterface;
 use Symfony\Component\HttpFoundation\ParameterBag;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\HttpFoundation\Session\Flash\FlashBagInterface;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
-use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
+use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 
 class AdminController
 {
     /**
-     * @var EngineInterface
+     * @var \Symfony\Bundle\FrameworkBundle\Templating\EngineInterface
      */
     protected $templating;
 
     /**
-     * @var UrlGeneratorInterface
+     * @var \Symfony\Component\Routing\Generator\UrlGeneratorInterface
      */
     protected $router;
-
-    /**
-     * @var FlashBagInterface
-     */
-    protected $flashBag;
 
     /**
      * @var AdminValuelistManagerInterface
@@ -37,33 +28,19 @@ class AdminController
     protected $valuelistManager;
 
     /**
+     * @var PaginatorInterface
+     */
+    protected $valuelistPaginator;
+
+    /**
      * @var ValuelistFormHandler
      */
     protected $valuelistFormHandler;
 
     /**
-     * @param EngineInterface $templating
+     * @var array
      */
-    public function setTemplating(EngineInterface $templating)
-    {
-        $this->templating = $templating;
-    }
-
-    /**
-     * @param UrlGeneratorInterface $router
-     */
-    public function setRouter(UrlGeneratorInterface $router)
-    {
-        $this->router = $router;
-    }
-
-    /**
-     * @param FlashBagInterface $flashBag
-     */
-    public function setFlashBag(FlashBagInterface $flashBag = null)
-    {
-        $this->flashBag = $flashBag;
-    }
+    protected $categories;
 
     /**
      * @param AdminValuelistManagerInterface $valuelistManager
@@ -71,6 +48,14 @@ class AdminController
     public function setValuelistManager(AdminValuelistManagerInterface $valuelistManager)
     {
         $this->valuelistManager = $valuelistManager;
+    }
+
+    /**
+     * @param PaginatorInterface $valuelistPaginator
+     */
+    public function setValuelistPaginator(PaginatorInterface $valuelistPaginator)
+    {
+        $this->valuelistPaginator = $valuelistPaginator;
     }
 
     /**
@@ -82,64 +67,75 @@ class AdminController
     }
 
     /**
-     * @param  string
-     *
-     * @return ParameterBag
+     * @param array $categories
      */
-    protected function initControllerBag($category)
+    public function setCategories(array $categories)
     {
-        return new ParameterBag(array('category' => $category));
+        $this->categories = $categories;
     }
 
     /**
-     * @param  string $category
-     *
-     * @return \Symfony\Component\HttpFoundation\Response
+     * @return ParameterBag
+     */
+    protected function initControllerBag($parameters = array())
+    {
+        $parameters = array_merge(array('category' => $this->request->attributes->get('category'), $parameters));
+
+        return new ParameterBag($parameters);
+    }
+
+    /**
+     * @param $category
      *
      * @throws \Symfony\Component\Security\Core\Exception\AccessDeniedException
+     *
+     * @return \Symfony\Component\HttpFoundation\Response
      */
     public function indexAction($category)
     {
-        $parameters = $this->initControllerBag($category);
-        $parameters->set('valuelist', $this->valuelistManager->getRepository()->findByCriteria(array('category' => $category)));
+        $parameters = $this->initControllerBag();
+        $parameters->set('paginator', $this->valuelistPaginator->createPaginator(array('category' => $category)));
 
         return $this->templating->renderResponse('NuxiaValuelistBundle:Admin:index.html.twig', $parameters->all());
     }
 
     /**
-     * @param  string $category
+     * @param $category
      *
-     * @return RedirectResponse|\Symfony\Component\HttpFoundation\Response
+     * @return \Symfony\Component\HttpFoundation\RedirectResponse|\Symfony\Component\HttpFoundation\Response
+     *
+     * @throws \Symfony\Component\Security\Core\Exception\AccessDeniedException
      */
-    public function newAction($category)
+    public function newAction(Request $request, $category)
     {
-        $parameters = $this->initControllerBag($category);
-        if ($this->valuelistFormHandler->process()) {
-            $this->flashBag->add('success', 'valuelist.' . $category . '.new.success');
-
-            return $this->redirectAction($this->valuelistFormHandler->getForm()->getData()->getCategory());
+        $parameters = $this->initControllerBag();
+        $this->valuelistFormHandler->process();
+        $form = $this->valuelistFormHandler->getForm();
+        if ($form->isValid()) {
+            $request->getSession()->getFlashBag()->add('success', 'valuelist.' . $category . '.new.success');
+            return $this->redirectAction($form->getData()->getCategory());
         }
 
-        $parameters->set('form', $this->valuelistFormHandler->getForm()->createView());
+        $parameters->set('form', $form->createView());
 
         return $this->templating->renderResponse('NuxiaValuelistBundle:Admin:new.html.twig', $parameters->all());
     }
 
     /**
-     * @param  Request $request
-     * @param  int     $id
-     * @param  string  $category
+     * @param $id
+     * @param $category
      *
-     * @return RedirectResponse|Response
+     * @throws \Symfony\Component\Security\Core\Exception\AccessDeniedException
+     *
+     * @return \Symfony\Component\HttpFoundation\RedirectResponse|\Symfony\Component\HttpFoundation\Response
      */
     public function editAction(Request $request, $id, $category)
     {
-        $parameters = $this->initControllerBag($request);
-        $valuelist = $this->getValuelist(array('id' => $id));
+        $parameters = $this->initControllerBag();
+        $valuelist = $this->getValuelist(array('id' => $id, 'category' => $category), 'edit');
 
         if ($this->valuelistFormHandler->process($valuelist)) {
-            $this->flashBag->add('success', 'valuelist.' . $category . '.edit.success');
-
+            $request->getSession()->getFlashBag()->add('success', 'valuelist.' . $category . '.edit.success');
             return $this->redirectAction($valuelist->getCategory());
         }
         $parameters->set('form', $this->valuelistFormHandler->getForm()->createView());
@@ -148,48 +144,46 @@ class AdminController
     }
 
     /**
-     * @param  int     $id
-     * @param  string  $category
+     * @param $id
+     * @param $category
+     * @throws \Symfony\Component\Security\Core\Exception\AccessDeniedException
      *
-     * @return RedirectResponse
+     * @return \Symfony\Component\HttpFoundation\RedirectResponse
      */
-    public function deleteAction($id, $category)
+    public function deleteAction(Request $request, $id, $category)
     {
-        $valuelist = $this->getValuelist($id);
+        $valuelist = $this->getValuelist(array('id' => $id, 'category' => $category), 'delete');
         $this->valuelistManager->delete($valuelist);
-        $this->flashBag->add('success', 'valuelist.' . $category . '.delete.success');
+        $request->getSession()->getFlashBag()->add('success', 'valuelist.' . $category . '.delete.success');
 
         return $this->redirectAction($category);
     }
 
     /**
-     * @param  string $category
-     *
      * @return \Symfony\Component\HttpFoundation\Response
      */
-    public function navAction($category)
+    public function navAction()
     {
-        $parameters = $this->initControllerBag($category);
-        $parameters->set('categories', array_keys($this->valuelistManager->getCategories()));
+        $parameters = $this->initControllerBag();
+        $parameters->set('categories', array_keys($this->categories));
 
         return $this->templating->renderResponse('NuxiaValuelistBundle:Admin:nav.html.twig', $parameters->all());
     }
 
     /**
-     * @param  array  $criteria
+     * @param  array $criteria
+     * @param $type
      *
-     * @throws NotFoundHttpException
+     * @return array
      *
-     * @return Valuelist
+     * @throws \Symfony\Component\HttpKernel\Exception\NotFoundHttpException
      */
-    protected function getValuelist($id)
+    protected function getValuelist(array $criteria, $type)
     {
-        $valuelist = $this->valuelistManager->getRepository()->find($id);
-
+        $valuelist = $this->valuelistManager->getControllerObject($criteria, $type);
         if ($valuelist === null) {
             throw new NotFoundHttpException();
         }
-
         return $valuelist;
     }
 

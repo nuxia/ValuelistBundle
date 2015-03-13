@@ -12,10 +12,18 @@ class ValuelistManager extends AbstractManager implements ValuelistManagerInterf
     protected $cache = array();
 
     /**
-     * @param  string $locale
-     * @param  string $category
-     * @param  string $parent
-     * @param  array  $criteria
+     * @return string
+     */
+    private function getClassName()
+    {
+        return 'Nuxia\ValuelistBundle\Entity\Valuelist';
+    }
+
+    /**
+     * @param string $locale
+     * @param string $category
+     * @param string $parent
+     * @param array  $criteria
      *
      * @return array
      */
@@ -31,17 +39,15 @@ class ValuelistManager extends AbstractManager implements ValuelistManagerInterf
     }
 
     /**
-     * @param  array $defaults
+     * @param array $defaults
      *
-     * @return Valuelist
+     * @return \Nuxia\ValuelistBundle\Entity\Valuelist
      */
     public function create(array $defaults = array())
     {
         $class = $this->getClassname();
-        /** @var Valuelist $valuelist */
         $valuelist = new $class();
         $valuelist->fromArrayOrObject($defaults);
-
         return $valuelist;
     }
 
@@ -55,7 +61,6 @@ class ValuelistManager extends AbstractManager implements ValuelistManagerInterf
             if ($useCache === false) {
                 return $valuelist;
             }
-
             $this->cache[$category][$locale][$parent] = $valuelist;
         }
 
@@ -68,7 +73,6 @@ class ValuelistManager extends AbstractManager implements ValuelistManagerInterf
     public function getValue($locale, $category, $code, $parent = 'null')
     {
         $valuelist = $this->getValuelist($locale, $category, $parent);
-
         if (array_key_exists($code, $valuelist)) {
             return $valuelist[$code];
         } else {
@@ -82,15 +86,21 @@ class ValuelistManager extends AbstractManager implements ValuelistManagerInterf
      */
     public function persist(Valuelist $valuelist, $andFlush = true)
     {
-        $this->entityManager->persist($valuelist);
-
+        $this->em->persist($valuelist);
         if ($andFlush === true) {
-            $this->entityManager->flush();
+            $this->em->flush();
         }
     }
 
     /**
-     * {@inheritDoc}
+     * @param string $locale
+     * @param string $category
+     * @param string $parent
+     * @param array  $criteria
+     * @param string $type
+     * @param array  $parameters
+     *
+     * @return array
      */
     public function findStmtByCriteria(
         $locale,
@@ -106,24 +116,26 @@ class ValuelistManager extends AbstractManager implements ValuelistManagerInterf
     }
 
     /**
-     * {@inheritDoc}
+     * @param string $locale
+     * @param string $category
+     * @param string $parent
+     * @param array  $criteria
+     * @param string $type
+     * @param array  $parameters
+     *
+     * @return \Nuxia\ValuelistBundle\Entity\Valuelist[]
      */
-    public function findByCriteria($locale, $category, $parent = 'null', array $criteria = array(), $type = 'default', array $parameters = array())
-    {
+    public function findByCriteria(
+        $locale,
+        $category,
+        $parent = 'null',
+        array $criteria,
+        $type = 'default',
+        array $parameters = array()
+    ) {
         $criteria = $this->getCriteria($locale, $category, $parent, $criteria);
 
         return $this->getRepository()->findByCriteria($criteria, $type, $parameters);
-
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public function findOneByCriteria($locale, $category, $code)
-    {
-        $criteria = $this->getCriteria($locale, $category);
-        $criteria['code'] = $code;
-        return $this->getRepository()->findOneByCriteria($criteria);
 
     }
 }

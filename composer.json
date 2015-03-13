@@ -4,7 +4,7 @@
     "type": "symfony-bundle",
     "description": "Valuelist",
     "autoload": {
-        "psr-4": { "Nuxia\\Bundle\\ValuelistBundle\\": ""}
+        "psr-4": { "Nuxia\\Bundle\\ValuelistBundle": ""}
     },
     "require": {
         "php": ">=5.4",
