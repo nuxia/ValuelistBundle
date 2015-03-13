@@ -9,14 +9,14 @@ class AdminValuelistManager extends ValuelistManager implements AdminValuelistMa
     /**
      * @var array
      */
-    protected $categories;
+    protected $categoryMap;
 
     /**
-     * @param array $categories
+     * @param array $categoryMap
      */
-    public function setCategories(array $categories)
+    public function setCategoryMap(array $categoryMap)
     {
-        $this->categories = $categories;
+        $this->categoryMap = $categoryMap;
     }
 
     /**
@@ -33,9 +33,9 @@ class AdminValuelistManager extends ValuelistManager implements AdminValuelistMa
     /**
      * {@inheritDoc}
      */
-    public function getCategories()
+    public function getCategoryMap()
     {
-        return $this->categories;
+        return $this->categoryMap;
     }
 
     /**
@@ -43,6 +43,6 @@ class AdminValuelistManager extends ValuelistManager implements AdminValuelistMa
      */
     public function isActionExistsOnCategory($action, $category)
     {
-        return in_array($action, $this->categories[$category]);
+        return in_array($action, $this->categoryMap[$category]);
     }
 }

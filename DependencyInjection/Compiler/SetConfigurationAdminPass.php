@@ -16,9 +16,7 @@ class SetConfigurationAdminPass implements CompilerPassInterface
             $categories = $container->getParameter('nuxia_valuelist.admin.categories');
             $valuelistManagerDefinition = $container->getDefinition('nuxia_valuelist.manager');
             $valuelistManagerDefinition->setClass('Nuxia\ValuelistBundle\Manager\AdminValuelistManager');
-            $valuelistManagerDefinition->addMethodCall('setCategories', array($categories));
-            $valuelistExtensionDefinition = $container->getDefinition('nuxia_valuelist.twig.extension');
-            $valuelistExtensionDefinition->setClass('Nuxia\ValuelistBundle\Twig\AdminValuelistExtension');
+            $valuelistManagerDefinition->addMethodCall('setCategories', array($categories));;
         }
     }
 }

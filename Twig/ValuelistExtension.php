@@ -7,9 +7,9 @@ use Nuxia\ValuelistBundle\Manager\ValuelistManagerInterface;
 class ValuelistExtension extends \Twig_Extension
 {
     /**
-     * @var string
+     * @var \Twig_Environment
      */
-    protected $environnement;
+    protected $environment;
 
     /**
      * @var string
@@ -34,7 +34,7 @@ class ValuelistExtension extends \Twig_Extension
      */
     public function initRuntime(\Twig_Environment $environment)
     {
-        //On ne peut pas initialiser directement la requête ici ca fait planter le client
+        //We can't initialize the request directly
         $this->environnement = $environment;
     }
 
@@ -44,15 +44,16 @@ class ValuelistExtension extends \Twig_Extension
     public function getFunctions()
     {
         return array(
-            'valuelist' => new \Twig_Function_Method($this, 'getValuelist', array('is_safe' => array('html'))),
-            'value' => new \Twig_Function_Method($this, 'getValue', array('is_safe' => array('html')))
+            'valuelist' => new \Twig_SimpleFunction('getValuelist', array('is_safe' => array('html'))),
+            'value' => new \Twig_Function_Method('getValue', array('is_safe' => array('html')))
         );
     }
 
     /**
-     * @param $category
+     * @param  string                                       $category
      * @param  null                                         $locale
      * @param  string                                       $parent
+     *
      * @return null|\Nuxia\ValueListBundle\Entity\Valuelist
      */
     public function getValuelist($category, $locale = null, $parent = 'null')
@@ -63,17 +64,16 @@ class ValuelistExtension extends \Twig_Extension
     }
 
     /**
-     * @param $category
-     * @param $code
+     * @param         $category
+     * @param  string $code
      * @param  null   $locale
      * @param  string $parent
+     *
      * @return array  : array('label' => 'label', 'value' => 0)
      */
     public function getValue($category, $code, $locale = null, $parent = 'null')
     {
-        $value = $this->valuelistManager->getValue(
-            $locale === null ? $this->getLocale() : $locale, $category, $code, $parent
-        );
+        $value = $this->valuelistManager->getValue($locale === null ? $this->getLocale() : $locale, $category, $code, $parent);
         if ($value === null) {
             return array(
                 'label' => $category . '/' . $code . '/label',
@@ -98,8 +98,7 @@ class ValuelistExtension extends \Twig_Extension
     private function getLocale()
     {
         if ($this->locale === null) {
-            $globals = $this->environnement->getGlobals();
-            $this->locale = $globals['app']->getRequest()->getLocale();
+            $this->locale = $this->environment->getGlobals()['app']->getRequest()->getLocale();
         }
 
         return $this->locale;

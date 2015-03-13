@@ -1,50 +1,51 @@
 {% extends 'NuxiaValuelistBundle:Admin:base.html.twig' %}
 
+{% trans_default_domain 'NuxiaValuelist' %}
+
 {% import 'NuxiaValuelistBundle:Macro:table.html.twig' as table_macro %}
 
 {% set fields = fields|default(['code', 'label', 'value']) %}
 
 {% block title_content %}
-    {{ ('valuelist.' ~ category ~ '.index.title')|trans({}, 'messages') }}
+    {{ ('valuelist.' ~ category ~ '.index.title')|trans }}
 {% endblock %}
 
 {% block seo %}
-    <title>{{ ('valuelist.' ~ category ~ '.index.title')|trans({}, 'messages') }}</title>
-    <meta content="{{ 'valuelist.index.' ~ category ~ '.title'|trans({}, 'messages') }}" name="title">
+    <title>{{ ('valuelist.' ~ category ~ '.index.title')|trans }}</title>
+    <meta content="{{ 'valuelist.index.' ~ category ~ '.title'|trans }}" name="title">
 {% endblock %}
 
 {% block content %}
     {% if valuelist_action_valid('new', category) %}
         <div>
-            <a href="{{ path('valuelist_new', {'category': category}) }}" title="{{ ('valuelist.' ~ category ~ '.new.link')|trans({}, 'messages') }}">
-                {{ ('valuelist.' ~ category ~ '.new.link')|trans({}, 'messages') }}
+            <a href="{{ path('valuelist_new', {'category': category}) }}" title="{{ ('valuelist.' ~ category ~ '.new.link')|trans }}">
+                {{ ('valuelist.' ~ category ~ '.new.link')|trans }}
             </a>
         </div>
     {% endif %}
-    <table>
-        <thead>
-            {{ table_macro.head('valuelist', fields) }}
-        </thead>
-        <tbody>
-            {% for valuelist in valuelists %}
-                <tr>
-                    {{ table_macro.row(valuelist, fields) }}
-                    {% if valuelist_action_valid('edit', category) or valuelist_action_valid('delete', category) %}
+    {% if list|length > 0 %}
+        <table>
+            <thead>
+                <th>{{ ('valuelist.code.column'|trans }}</th>
+                <th>{{ ('valuelist.label.column'|trans }}</th>
+                <th>{{ ('valuelist.value.column'|trans }}</th>
+                <th class="actions"></th>
+            </thead>
+            <tbody>
+                {% for valuelist in list %}
+                    <tr>
+                        <td>{{ valuelist.code }}</td>
+                        <td>{{ valuelist.label) }}</td>
+                        <td>{{ valuelist.value }}</td>
                         <td class="actions">
-                            {% if security.canManageObject(valuelist, 'edit') and valuelist_action_valid('edit', category) %}
-                                <a href="{{ path('valuelist_edit', {'_object': valuelist}) }}" title="{{ 'edit'|trans({}, 'messages') }}">
-                                    {{ 'edit'|trans({}, 'messages') }}
-                                </a>
-                            {% endif %}
-                            {% if security.canManageObject(valuelist, 'delete') and valuelist_action_valid('delete', category) %}
-                                <a href="{{ path('valuelist_delete', {'_object': valuelist}) }}" title="{{ 'delete'|trans({}, 'messages') }}">
-                                    {{ 'delete'|trans({}, 'messages') }}
-                                </a>
-                            {% endif %}
+                            <a href="{{ path('valuelist_edit', {'_object': valuelist}) }}" title="{{ 'edit'|trans }}">{{ 'edit'|trans }}</a>
+                            <a href="{{ path('valuelist_delete', {'_object': valuelist}) }}" title="{{ 'edit'|trans }}">{{ 'delete'|trans }}</a>
                         </td>
-                    {% endif %}
-                </tr>
-            {% endfor %}
-        </tbody>
-    </table>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    {% else %}
+        <div>{{ 'no_result'|trans }}</div>
+    {% endif %}
 {% endblock %}

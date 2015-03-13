@@ -2,27 +2,49 @@
 
 namespace Nuxia\ValuelistBundle\Twig;
 
-class AdminValuelistExtension extends ValuelistExtension
+use Nuxia\ValuelistBundle\Manager\AdminValuelistManagerInterface;
+
+class AdminValuelistExtension
 {
+    /**
+     * @var AdminValuelistManagerInterface
+     */
+    protected $valuelistManager;
+
+    /**
+     * @param AdminValuelistManagerInterface $valuelistManager
+     */
+    public function __construct(AdminValuelistManagerInterface $valuelistManager)
+    {
+        $this->valuelistManager = $valuelistManager;
+    }
+
     /**
      * {@inheritdoc}
      */
     public function getFunctions()
     {
-        $functions = parent::getFunctions();
-        $functions['valuelist_action_valid'] = new \Twig_Function_Method($this, 'isActionExistsOnCategory', array('is_safe' => array('html')));
-
-        return $functions;
+        return array(
+            'valuelist_action_valid' => new \Twig_SimpleFunction('isActionExistsOnCategory', array('is_safe' => array('html'))),
+        );
     }
 
     /**
-     * @param $action
-     * @param $category
+     * @param  string $action
+     * @param  string $category
      *
      * @return bool
      */
     public function isActionExistsOnCategory($action, $category)
     {
         return $this->valuelistManager->isActionExistsOnCategory($action, $category);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getName()
+    {
+        return 'admin_valuelist';
     }
 }

@@ -1,7 +1,0 @@
-{% macro index_url(category) %}
-    {{ path('valuelist_index', {'category': category|default(app.request.attributes.get('category'))}) }}
-{% endmacro %}
-
-{% macro index_link(category) %}
-    <a href="{{ _self.index_url(category) }}" title="{{ ('valuelist.' ~ category ~ '.index.link')|trans) }}">{{ ('valuelist.' ~ category ~ '.index.link')|trans }}</a>
-{% endmacro %}

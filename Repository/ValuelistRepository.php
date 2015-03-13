@@ -4,12 +4,14 @@ namespace Nuxia\ValuelistBundle\Repository;
 
 use Doctrine\ORM\EntityRepository;
 use Doctrine\ORM\QueryBuilder;
+use Nuxia\ValuelistBundle\Entity\Valuelist;
 use Symfony\Component\HttpFoundation\ParameterBag;
 
 class ValuelistRepository extends EntityRepository
 {
     /**
-     * @param $join
+     * @param  string $join
+     *
      * @return QueryBuilder
      */
     protected function initQueryBuilder($join)
@@ -28,7 +30,7 @@ class ValuelistRepository extends EntityRepository
 
     /**
      * @param QueryBuilder $qb
-     * @param $join
+     * @param string       $join
      */
     protected function setSelect(QueryBuilder $qb, $join)
     {
@@ -43,9 +45,10 @@ class ValuelistRepository extends EntityRepository
     }
 
     /**
-     * @param  array        $criteria
-     * @param $join
-     * @param  array        $parameters
+     * @param  array    $criteria
+     * @param  string    $join
+     * @param  array    $parameters
+     *
      * @return QueryBuilder
      */
     private function getQueryBuilderByCriteria(array $criteria, $join, array $parameters = array())
@@ -71,9 +74,10 @@ class ValuelistRepository extends EntityRepository
     }
 
     /**
-     * @param $criteria
-     * @param $join
-     * @param $parameters
+     * @param  array  $criteria
+     * @param  string $join
+     * @param  array  $parameters
+     *
      * @return \Doctrine\ORM\Query
      */
     public function getQueryByCriteria($criteria, $join, $parameters)
@@ -82,12 +86,13 @@ class ValuelistRepository extends EntityRepository
     }
 
     /**
-     * @param $criteria
-     * @param $join
-     * @param $parameters
-     * @return mixed
+     * @param  array  $criteria
+     * @param  string $join
+     * @param  array  $parameters
+     *
+     * @return Valuelist|null
      */
-    public function findOneByCriteria($criteria, $join, $parameters)
+    public function findOneByCriteria($criteria, $join = 'default', array $parameters = array())
     {
         return $this->getQueryByCriteria($criteria, $join, $parameters)->getOneOrNullResult();
     }
@@ -96,6 +101,7 @@ class ValuelistRepository extends EntityRepository
      * @param  array  $criteria
      * @param  string $join
      * @param  array  $parameters
+     *
      * @return array
      */
     public function findByCriteria(array $criteria, $join = 'default', array $parameters = array())
@@ -113,7 +119,8 @@ class ValuelistRepository extends EntityRepository
      * @param  array  $criteria
      * @param  string $type
      * @param  array  $parameters
-     * @return array
+     *
+     * @return Valuelist[]
      */
     public function findStmtByCriteria(array $criteria, $type = 'default', array $parameters = array())
     {
@@ -130,9 +137,9 @@ class ValuelistRepository extends EntityRepository
     }
 
     /**
-     * @param array $results
-     * @param array $row
-     * @param $type
+     * @param array  $results
+     * @param array  $row
+     * @param string $type
      */
     private function buildStmtRow(array &$results, array $row, $type)
     {

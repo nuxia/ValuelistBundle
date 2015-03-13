@@ -101,7 +101,7 @@ class AdminController
     public function indexAction($category)
     {
         $parameters = $this->initControllerBag($category);
-        $parameters->set('valuelist', $this->valuelistManager->getRepository()->findByCriteria(array('category' => $category)));
+        $parameters->set('list', $this->valuelistManager->getRepository()->findByCriteria(array('category' => $category)));
 
         return $this->templating->renderResponse('NuxiaValuelistBundle:Admin:index.html.twig', $parameters->all());
     }

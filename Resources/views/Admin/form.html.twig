@@ -1,5 +1,3 @@
-{% import 'NuxiaValuelistBundle:Macro:valuelist.html.twig' as valuelist_macro %}
-
 {% trans_default_domain 'NuxiaValuelist' %}
 
 {% block form_content %}
@@ -9,5 +7,5 @@
 {% endblock form_content %}
 
 {% block form_actions %}
-    <a href="{{ valuelist_macro.index_url(category) }}" title="{{ 'back'|trans }}">{{ 'back'|trans) }}</a>
+    <a href="{{ path('valuelist_index', {'category': category} }}" title="{{ 'back'|trans }}">{{ 'back'|trans) }}</a>
 {% endblock %}

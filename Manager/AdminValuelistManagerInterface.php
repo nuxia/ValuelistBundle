@@ -17,7 +17,7 @@ interface AdminValuelistManagerInterface extends ValuelistManagerInterface
     /**
      * @return array
      */
-    public function getCategories();
+    public function getCategoryMap();
 
     /**
      * @param  Valuelist $valuelist
